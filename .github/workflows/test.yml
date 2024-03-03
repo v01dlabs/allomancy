@@ -1,0 +1,77 @@
+on:
+  workflow_dispatch:
+  pull_request: # Run CI for PRs on any branch
+  merge_group: # Run CI for the GitHub merge queue
+  
+name: Continuous Integration
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+      - run: cargo test --workspace
+  
+  test-all-features:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+      - run: cargo test --workspace --all-features
+
+  build-raspi-64bit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          target: aarch64-unknown-linux-gnu
+      - run: >
+          cargo build
+          --workspace 
+          --target aarch64-unknown-linux-gnu
+          --all-features
+
+  build-raspi-32bit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          target: armv7-unknown-linux-gnueabihf
+      - run: >
+          cargo build
+          --workspace 
+          --target armv7-unknown-linux-gnueabihf
+          --all-features
+
+  build-raspi-zero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          target: arm-unknown-linux-gnueabihf
+      - run: >
+          cargo build
+          --workspace 
+          --target arm-unknown-linux-gnueabihf
+          --all-features
+
+  build-nostd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          target: thumbv7m-none-eabi
+      - run: >
+          cargo build
+          -p embedded-hal-ext
+          --target thumbv7m-none-eabi
+          --features async,defmt-03
+
