@@ -14,14 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@beta
-      - run: cargo test --workspace
+        with:
+          target: aarch64-unknown-linux-gnu
+      - run: cargo test --workspace --target aarch64-unknown-linux-gnu
+      - uses: Swatinem/rust-cache@v2
   
   test-all-features:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@beta
-      - run: cargo test --workspace --all-features
+        with:
+          target: aarch64-unknown-linux-gnu
+      - run: cargo test --workspace --all-features --target aarch64-unknown-linux-gnu
+      - uses: Swatinem/rust-cache@v2
 
   build-raspi-64bit:
     runs-on: ubuntu-latest
@@ -35,6 +41,7 @@ jobs:
           --workspace 
           --target aarch64-unknown-linux-gnu
           --all-features
+      - uses: Swatinem/rust-cache@v2
 
   build-raspi-32bit:
     runs-on: ubuntu-latest
@@ -48,6 +55,7 @@ jobs:
           --workspace 
           --target armv7-unknown-linux-gnueabihf
           --all-features
+      - uses: Swatinem/rust-cache@v2
 
   build-raspi-zero:
     runs-on: ubuntu-latest
@@ -61,6 +69,7 @@ jobs:
           --workspace 
           --target arm-unknown-linux-gnueabihf
           --all-features
+      - uses: Swatinem/rust-cache@v2
 
   build-nostd:
     runs-on: ubuntu-latest
@@ -74,4 +83,5 @@ jobs:
           -p embedded-hal-ext
           --target thumbv7m-none-eabi
           --features async,defmt-03
+      - uses: Swatinem/rust-cache@v2
 
