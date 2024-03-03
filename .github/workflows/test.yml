@@ -14,9 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@beta
-        with:
-          target: aarch64-unknown-linux-gnu
-      - run: cargo test --workspace --target aarch64-unknown-linux-gnu
+      - run: cargo test --workspace
       - uses: Swatinem/rust-cache@v2
   
   test-all-features:
@@ -24,9 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@beta
-        with:
-          target: aarch64-unknown-linux-gnu
-      - run: cargo test --workspace --all-features --target aarch64-unknown-linux-gnu
+      - run: cargo test --workspace --all-features
       - uses: Swatinem/rust-cache@v2
 
   build-raspi-64bit:
