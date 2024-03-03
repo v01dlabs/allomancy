@@ -10,6 +10,11 @@ But it's likely that several things that end up getting built out here don't mak
 
 ## Crates (current)
 - [`embedded-hal-ext`](./embedded-hal-ext/README.md)
+- [`raspi-hal`](./raspi-hal/README.md)
+
+## Building
+
+I recommend using the [`cross`](https://github.com/cross-rs/cross) crate for compiling for other platforms (like the Pi or microcontrollers). Repository is currently configured to target the Pi 4 and 5 64-bit OS version, but you can specify the target in the `cross build` command or modify [Cross.toml](./Cross.toml) with the right target triple (`armv7-unknown-linux-gnueabihf` for 32-bit Raspberry Pi OS, `arm-unknown-linux-gnueabihf` for the Pi Zero, I believe). That works well for pretty much everything *except* Xtensa architecture ESP32s, which currently need a fork of `rustc` that supports the architecture. The `espup` crate and the docker containers Espressif provides can help with that toolchain. `cross` apparently has some issues running tests on crates, specifically anything that uses threads. Test with actual hardware if you can.
 
 ## License
 
