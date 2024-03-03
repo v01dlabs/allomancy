@@ -19,6 +19,7 @@ Reduce need for platform-specific code in embedded peripheral drivers, crates, a
 ## Optional Cargo features
 
 - **`defmt`**: Derive `defmt::Format` from `defmt` 0.3 for enums and structs.
+- **`async`**: async/await features
 
 ## Minimum Supported Rust Version (MSRV)
 

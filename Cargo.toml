@@ -2,5 +2,6 @@
 resolver = "2"
 
 members = [
-    "embedded-hal-ext"
-]
+    "embedded-hal-ext", 
+    "raspi-hal"
+    ]
