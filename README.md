@@ -9,7 +9,7 @@ But it's likely that several things that end up getting built out here don't mak
 
 
 ## Crates (current)
-- `embedded-hal-ext`
+- [`embedded-hal-ext`](./embedded-hal-ext/README.md)
 
 ## License
 
