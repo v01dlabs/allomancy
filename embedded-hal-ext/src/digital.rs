@@ -307,7 +307,7 @@ impl<T: Event + ?Sized> Event for &mut T {
     #[cfg(feature = "async")]
     #[inline]
     async fn wait_for(self: &mut Self, event: PinEvent) -> Result<PinEvent, Self::Error> {
-        T::wait_for(event)
+        T::wait_for(self, event).await
     }
 }
 
