@@ -4,3 +4,4 @@
 Cargo.lock
 third_party
 out/
+.obsidian/
