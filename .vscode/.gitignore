@@ -2,3 +2,5 @@
 launch.json
 tasks.json
 *.cfg
+.devenv
+.direnv
