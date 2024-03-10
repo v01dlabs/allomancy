@@ -5,3 +5,5 @@ Cargo.lock
 third_party
 out/
 .obsidian/
+.devenv
+.direnv
