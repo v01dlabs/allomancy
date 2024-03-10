@@ -3,5 +3,6 @@ resolver = "2"
 
 members = [
     "embedded-hal-ext", 
-    "raspi-hal"
+    "raspi-hal",
+    "raspi-hal-procmacros",
     ]

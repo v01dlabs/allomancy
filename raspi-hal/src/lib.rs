@@ -1,9 +1,21 @@
 #![doc = include_str!("../README.md")]
 //#![warn(missing_docs)]
 #![cfg_attr(nightly, allow(stable_features, unknown_lints))]
-#![cfg_attr(nightly, feature(async_fn_in_trait, impl_trait_projections))]
+#![cfg_attr(feature = "async", allow(stable_features, async_fn_in_trait))]
+
 #![allow(async_fn_in_trait)]
 // Need to redo the implementation I have of this elsewhere
 // Just a stub for now
 
+
+use gpio_cdev as cgpio;
+#[macro_use]
+mod macros;
 pub mod gpio;
+pub mod chip;
+pub mod peripheral;
+
+pub(crate) mod private {
+    pub trait Sealed {}
+}
+

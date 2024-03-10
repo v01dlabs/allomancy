@@ -66,7 +66,7 @@ impl From<Polarity> for bool {
 /// Implementations are free to define additional ones
 ///     e.g. different drive strengths, sometimes used to shorten rise/fall time and enable faster switching and higher frequencies
 /// TODO: Add compile-time checks for this and other similar features, since not every platform has e.g. open emitter capabilites on any or all pins
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[cfg_attr(feature = "defmt-03", derive(defmt::Format))]
 #[repr(u8)]
 #[non_exhaustive]
@@ -108,7 +108,6 @@ pub enum Bias {
 /// TODO: Add compile-time checks for this and other similar features, since not every platform has e.g. internal pulldowns that are configurable
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[cfg_attr(feature = "defmt-03", derive(defmt::Format))]
-#[repr(u8)]
 #[non_exhaustive]
 pub enum PinMode {
     /// Input-only mode
@@ -117,13 +116,14 @@ pub enum PinMode {
     Output,
     /// Bi-directional mode
     /// Implements `embedded-hal` `Input` and `Output` traits regardless of mode
-    IO,
+    IOMode,
     /// Supports interrupts/events
     /// Can be implemented on all pins with software implementation where needed, or restricted to specific pins that support it in hardware
     /// Platforms should aim to provide per-pin interrupt granulatity even if not directly supported in hardware
     ///     (e.g. EXTI pin mode on STM32, which often has one interrupt for multiple pins)
     Events,
-    //Analog,
+    /// Alternate function modes by number
+    Alt(u8),
 }
 
 /// GPIO Pin events.
@@ -180,13 +180,13 @@ pub trait PinID {
     fn id(&self) -> u16;
 
     /// The standard human-readable name, similar to what's printed on a dev board silkscreen
-    fn name(&self) -> heapless::String<8>;
+    fn name(&self) -> heapless::String<16>;
 }
 
 /// Configurable generic GPIO pin
 /// Implement one or both of the ConfigurableInput and ConfigurableOutput sub-traits for each hardware GPIO pin
 /// Capabilities can be checked at runtime as well
-pub trait Configurable: ErrorType {
+pub trait ConfigurablePin: ErrorType {
     /// Returns a list of the pin's supported modes
     fn capabilities(self: &Self) -> &[PinMode];
 
@@ -205,7 +205,7 @@ pub trait Configurable: ErrorType {
     fn set_bias(self: &mut Self, direction: Bias) -> Result<Bias, Self::Error>;
 }
 
-impl<T: Configurable + ?Sized> Configurable for &mut T {
+impl<T: ConfigurablePin + ?Sized> ConfigurablePin for &mut T {
     #[inline]
     fn capabilities(self: &Self) -> &[PinMode] {
         T::capabilities(self)
@@ -233,7 +233,7 @@ impl<T: Configurable + ?Sized> Configurable for &mut T {
 }
 
 /// GPIO pin that can be configured as an input
-pub trait ConfigurableInput: Configurable + embedded_hal::digital::InputPin {
+pub trait ConfigurableInput: ConfigurablePin + embedded_hal::digital::InputPin {
     /// Converts pin into input mode
     fn into_input(self: &mut Self) -> Result<(), Self::Error>;
 }
@@ -312,7 +312,7 @@ impl<T: Event + ?Sized> Event for &mut T {
 }
 
 /// GPIO Pin can be configured as an output
-pub trait ConfigurableOutput: Configurable + embedded_hal::digital::OutputPin {
+pub trait ConfigurableOutput: ConfigurablePin + embedded_hal::digital::OutputPin {
     /// Converts pin into output mode
     fn into_output(self: &mut Self) -> Result<(), Self::Error>;
 
