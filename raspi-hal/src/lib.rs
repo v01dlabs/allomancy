@@ -6,9 +6,12 @@
 #![allow(async_fn_in_trait)]
 // Need to redo the implementation I have of this elsewhere
 // Just a stub for now
+#[macro_use]
+extern crate bitflags;
+#[macro_use]
+extern crate nix;
 
 
-use gpio_cdev as cgpio;
 #[macro_use]
 mod macros;
 pub mod gpio;

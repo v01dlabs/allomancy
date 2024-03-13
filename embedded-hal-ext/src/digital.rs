@@ -60,6 +60,60 @@ impl From<Polarity> for bool {
     }
 }
 
+/// Represents a digital input or output state, independent of polarity.
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
+pub enum State {
+    /// Logical low.
+    Clr,
+    /// Logical high.
+    Set,
+}
+
+impl From<bool> for State {
+    fn from(val: bool) -> Self {
+        match val {
+            true => Self::Set,
+            false => Self::Clr,
+        }
+    }
+}
+
+impl From<State> for bool {
+    fn from(level: State) -> bool {
+        match level {
+            State::Clr => false,
+            State::Set => true,
+        }
+    }
+}
+
+/// Represents a digital input or output level.
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
+pub enum Level {
+    /// Logical low.
+    Low,
+    /// Logical high.
+    High,
+}
+
+impl From<bool> for Level {
+    fn from(val: bool) -> Self {
+        match val {
+            true => Self::High,
+            false => Self::Low,
+        }
+    }
+}
+
+impl From<Level> for bool {
+    fn from(level: Level) -> bool {
+        match level {
+            Level::Low => false,
+            Level::High => true,
+        }
+    }
+}
+
 /// GPIO Output drive mode.
 ///
 /// This represents a typical set of output modes
@@ -136,7 +190,6 @@ pub enum PinMode {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[cfg_attr(feature = "defmt-03", derive(defmt::Format))]
 #[repr(u8)]
-#[non_exhaustive]
 pub enum PinEvent {
     /// High logic level
     High,
@@ -338,3 +391,37 @@ impl<T: ConfigurableOutput + ?Sized> ConfigurableOutput for &mut T {
 
 /// Configurable GPIO Pin that implements both Input and Output traits
 pub trait ConfigurableIO: ConfigurableInput + ConfigurableOutput {}
+
+pub trait PinType {}
+
+pub trait IsOutputPin: PinType {}
+
+pub trait IsInputPin: PinType {}
+
+pub trait IsInterruptPin: PinType {}
+
+
+pub struct InputOutputPinType;
+
+pub struct InputOnlyPinType;
+
+pub struct InputOnlyInterruptPinType;
+
+pub struct InputOutputInterruptPinType;
+
+
+impl PinType for InputOutputPinType {}
+impl IsOutputPin for InputOutputPinType {}
+impl IsInputPin for InputOutputPinType {}
+
+impl PinType for InputOnlyPinType {}
+impl IsInputPin for InputOnlyPinType {}
+
+impl PinType for InputOnlyInterruptPinType {}
+impl IsInterruptPin for InputOnlyInterruptPinType {}
+impl IsInputPin for InputOnlyInterruptPinType {}
+
+impl PinType for InputOutputInterruptPinType {}
+impl IsInterruptPin for InputOutputInterruptPinType {}
+impl IsInputPin for InputOutputInterruptPinType {}
+impl IsOutputPin for InputOutputInterruptPinType {}

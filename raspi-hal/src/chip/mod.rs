@@ -15,6 +15,7 @@ use embedded_hal_ext::digital::{Bias, Polarity, PinID, PinEvent, DriveMode};
 #[cfg_attr(feature = "pi_zero", path = "pi_zero/mod.rs")]
 mod implementation;
 
+pub(crate)mod ioctl;
 /// Broadcom GPIO numbers for the header pins
 #[derive(Debug, Clone, EnumCountMacro, EnumIter, FromRepr, AsRefStr, Copy)]
 #[repr(u8)]
@@ -103,9 +104,7 @@ impl PinID for PiHeader {
         heapless::String::from_str(self.as_ref()).unwrap()
     }
 }
-pub use self::implementation::GPIO_CHIP;
 
-pub trait Soc {}
 
 /// Pin modes.
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
