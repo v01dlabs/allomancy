@@ -16,5 +16,5 @@ embedded-hal-async = { version = "1", optional = true }
 # embedded-hal crate based on linux apis. Kinda awkward.
 linux-embedded-hal = "0.4"
 # Pi-specific HAL crate. Has some weird limitations. Might end up forking this or just building own impl.
-rppal = { version = "0.17", features = ["embedded-hal-nb"] }
+rppal = { version = "0.19", features = ["embedded-hal-nb"] }
 embedded-hal-ext = { version = "*", path = "../embedded-hal-ext"}

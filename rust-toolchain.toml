@@ -1,0 +1,11 @@
+[toolchain]
+channel = "nightly"
+targets = [ 
+    "thumbv6m-none-eabi", # Cortex-M0 and Cortex-M0+ (rp2040)
+    "thumbv7em-none-eabi", # Cortex-M4 and Cortex-M7 (nrf52 series)
+    "thumbv8m.main-none-eabihf", # Cortex-M23  (rp23 series ARM cores)
+    "riscv32imac-unknown-none-elf", # RISC-V 32-bit (rp23 series RISC-V cores)
+    "aarch64-unknown-linux-gnu", # Raspberry Pi 64-bit OS, Asahi Linux, etc.
+    "armv7-unknown-linux-gnueabihf" # Raspberry Pi 32-bit OS
+    ]
+components = [ "rustfmt", "rust-src", "rust-analyzer", "llvm-tools", "miri" ]

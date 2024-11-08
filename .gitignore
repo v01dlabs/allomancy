@@ -3,5 +3,8 @@
 /target
 Cargo.lock
 third_party
+/Cargo.toml
 out/
-.obsidian/
+result/
+.direnv
+**/target/
